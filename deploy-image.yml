@@ -1,0 +1,16 @@
+---
+- name: Pull Spring image of Review App
+  hosts: all
+  tasks:
+    - name: Pull app image
+      docker_image:
+        name: rajatkumariiitb/startup_review-react
+        source: pull
+    - name: Running the container
+      docker_container:
+        name: startupreview
+        image: rajatkumariiitb/startup_review-react:latest
+        state: started
+        restart: yes
+        ports:
+          - "8081:8081"
