@@ -8,7 +8,7 @@
         source: pull
     - name: Running the container
       docker_container:
-        name: startupreview
+        name: startupreview-spring
         image: rajatkumariiitb/startup_review-spring:latest
         state: started
         restart: yes
