@@ -15,4 +15,4 @@
         ports:
           - "8081:8081"
         networks:
-          - name: host
+          - name: app-default
