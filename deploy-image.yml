@@ -14,3 +14,5 @@
         restart: yes
         ports:
           - "8081:8081"
+        networks:
+          - name: bridge
