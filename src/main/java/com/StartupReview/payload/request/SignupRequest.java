@@ -9,6 +9,10 @@ public class SignupRequest {
     private String username;
 
     @NotBlank
+    @Size(max = 20)
+    private String name;
+
+    @NotBlank
     @Size(max = 50)
     @Email
     private String email;
@@ -50,4 +54,8 @@ public class SignupRequest {
     public void setRole(Set<String> role) {
         this.role = role;
     }
+
+    public String getName() { return name; }
+
+    public void setName(String name) { this.name = name; }
 }
