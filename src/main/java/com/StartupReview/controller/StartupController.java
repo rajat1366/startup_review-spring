@@ -49,6 +49,17 @@ public class StartupController {
         }
 
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getStartupbyId(@PathVariable("id") long id ){
+        Optional <Startup> startup = startupService.getstartupsById(id);
+        if(startup.isPresent()){
+            return ResponseEntity.ok(startup.get());
+        } else {
+             return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Startup Not found!!!"));
+        }
+    }
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
@@ -66,10 +77,10 @@ public class StartupController {
             User user = userService.findById(userDetails.getId()).orElseThrow(() -> new RuntimeException("Error: User is not found."));
 
             String string = startupRequest.getLaunchDate();
-            SimpleDateFormat format = new SimpleDateFormat("MMM d, yyyy", Locale.ENGLISH); //if month entered in full-text like 'january', use MMMM
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); //if month entered in full-text like 'january', use MMMM
             Date launchDate = format.parse(string);
 
-            Startup startup = new Startup(startupRequest.getName(), startupRequest.getDescription(), user, launchDate, LocalDateTime.now());
+            Startup startup = new Startup(startupRequest.getName().toLowerCase(), startupRequest.getDescription(), user, launchDate, LocalDateTime.now());
 //            startup.setUser(user);
 //            startup.setName(startup.getName().toLowerCase());
 //            startup.setDateTime( LocalDateTime.now());

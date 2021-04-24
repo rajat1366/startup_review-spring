@@ -3,6 +3,7 @@ package com.StartupReview.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -25,8 +26,8 @@ public class Rating {
     private String description;
 
     @NotBlank
-    @Temporal(TemporalType.DATE)
-    private Date date;
+    @Column
+    private LocalDateTime dateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "startup_id")

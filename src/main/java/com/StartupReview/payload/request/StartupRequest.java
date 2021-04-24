@@ -10,6 +10,7 @@ public class StartupRequest {
     @NotBlank
     private String description;
 
+    @NotBlank
     private String launchDate;
 
     public String getName() {

@@ -28,4 +28,8 @@ public class StartupService {
     public Page<Startup >getstartupsFromSearchData(String searchData,Pageable pageable){
         return  startupRepository.findByNameContainingOrDescriptionContaining(searchData,searchData, pageable);
     }
+
+    public Optional<Startup> getstartupsById(long id) {
+        return startupRepository.findById(id);
+    }
 }
