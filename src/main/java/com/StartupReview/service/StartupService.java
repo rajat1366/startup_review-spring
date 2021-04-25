@@ -32,4 +32,8 @@ public class StartupService {
     public Optional<Startup> getstartupsById(long id) {
         return startupRepository.findById(id);
     }
+
+    public void deleteById(long id) {
+        startupRepository.deleteById(id);
+    }
 }

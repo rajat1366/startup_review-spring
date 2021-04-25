@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -96,5 +98,44 @@ public class StartupController {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Unable to add new startup!"));
         }
 
+    }
+
+    @PutMapping("/update/{id}")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    public ResponseEntity<?> updateStartup(@Valid @PathVariable("id") long id, @RequestBody StartupRequest startupRequest) throws ParseException {
+
+        Optional<Startup> startup = startupService.getstartupsById(id);
+        UserDetailsImpl userDetails =
+                (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.findById(userDetails.getId()).orElseThrow(() -> new RuntimeException("Error: User is not found."));
+
+        String string = startupRequest.getLaunchDate();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); //if month entered in full-text like 'january', use MMMM
+        Date launchDate = format.parse(string);
+
+        Startup s = startup.get();
+        s.setUser(user);
+        s.setName(startupRequest.getName().toLowerCase());
+        s.setDescription(startupRequest.getDescription());
+        s.setLaunchDate(launchDate);
+        s.setDateTime(LocalDateTime.now());
+
+        Startup result = startupService.saveStartup(s);
+
+        if(result != null)
+            return ResponseEntity.ok(new MessageResponse("startup details updated successfully!"));
+        else
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Unable to update startup details!"));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    public ResponseEntity<HttpStatus> deleteStartup(@PathVariable("id") long id) {
+        try {
+            startupService.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
