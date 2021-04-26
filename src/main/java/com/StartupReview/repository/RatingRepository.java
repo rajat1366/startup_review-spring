@@ -1,6 +1,7 @@
 package com.StartupReview.repository;
 
 import com.StartupReview.models.Rating;
+import com.StartupReview.models.Startup;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,5 +27,8 @@ public interface RatingRepository extends JpaRepository<Rating,Long> {
     Optional<Rating> FindByUser_idAndStartup_id(Long user_id,Long startup_id);
 
     Page<Rating> findAllByOrderByDateTimeDesc(Pageable pageable);
+
+    @Query("SELECT r FROM Rating r WHERE r.startup.id=?1 order by r.dateTime desc ")
+    Page<Rating> FindByStartupOrderByDateTimeDesc(Long startupId, Pageable pageable);
 
 }

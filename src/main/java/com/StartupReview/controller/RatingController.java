@@ -13,6 +13,9 @@ import com.StartupReview.service.StartupService;
 import com.StartupReview.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -125,6 +128,24 @@ public class RatingController {
             System.out.println(e.getMessage());
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Unable to add new review!"));
         }
+
+    }
+    @GetMapping("/get")
+    public ResponseEntity<?>getStartups(@RequestParam String startupId,@RequestParam(defaultValue = "0") int page,
+                                        @RequestParam(defaultValue = "3") int size){
+        Pageable paging = PageRequest.of(page, size);
+        Page<Rating> listofReviews = ratingService.getRatings(Long.parseLong(startupId),paging);
+        if(listofReviews != null)
+        return ResponseEntity.ok(listofReviews);
+        else
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Unable to get reviews!!"));
+//        if(searchData == null){
+//            Page<Startup> listofStartups =  startupService.getstartups(paging);
+//            return ResponseEntity.ok(listofStartups);
+//        } else {
+//            Page<Startup> listofStartups =  startupService.getstartupsFromSearchData(searchData,paging);
+//            return ResponseEntity.ok(listofStartups);
+//        }
 
     }
 

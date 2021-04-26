@@ -3,8 +3,10 @@ package com.StartupReview.service;
 import com.StartupReview.models.Rating;
 
 
+import com.StartupReview.models.Startup;
 import com.StartupReview.payload.response.StartupRatingResponse;
 import com.StartupReview.repository.RatingRepository;
+import com.StartupReview.repository.StartupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
@@ -18,8 +20,10 @@ import java.util.Optional;
 public class RatingService {
 
     @Autowired
-
     RatingRepository ratingRepository;
+
+    @Autowired
+    StartupRepository startupRepository;
 
     public Rating saveRating(Rating rating){
         return ratingRepository.save(rating);
@@ -48,8 +52,10 @@ public class RatingService {
         return ratingRepository.findById(ratingId);
     }
 
-    public Page<Rating> getRatings(Pageable pageable){
-        return ratingRepository.findAllByOrderByDateTimeDesc(pageable);
+    public Page<Rating> getRatings(Long startupId,Pageable pageable){
+
+            return ratingRepository.FindByStartupOrderByDateTimeDesc(startupId,pageable);
+
     }
 
     public Optional<Rating> getratingsById(long id) {
