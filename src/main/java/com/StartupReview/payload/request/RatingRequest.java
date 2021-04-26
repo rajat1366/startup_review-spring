@@ -3,6 +3,7 @@ package com.StartupReview.payload.request;
 import javax.validation.constraints.NotBlank;
 
 public class RatingRequest {
+
     private String id;
 
     @NotBlank
@@ -23,6 +24,7 @@ public class RatingRequest {
         this.id = id;
     }
 
+
     public String getTitle() {
         return title;
     }
@@ -31,13 +33,6 @@ public class RatingRequest {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public String getRating() {
         return rating;
@@ -45,6 +40,14 @@ public class RatingRequest {
 
     public void setRating(String rating) {
         this.rating = rating;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 

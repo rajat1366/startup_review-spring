@@ -1,6 +1,5 @@
 package com.StartupReview.controller;
 
-
 import com.StartupReview.models.Rating;
 import com.StartupReview.models.Startup;
 import com.StartupReview.models.User;
@@ -8,10 +7,12 @@ import com.StartupReview.payload.request.RatingRequest;
 import com.StartupReview.payload.response.MessageResponse;
 import com.StartupReview.payload.response.StartupRatingResponse;
 import com.StartupReview.security.services.UserDetailsImpl;
+
 import com.StartupReview.service.RatingService;
 import com.StartupReview.service.StartupService;
 import com.StartupReview.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,11 +21,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+
 import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/review")
+
 public class RatingController {
 
     @Autowired
@@ -89,8 +92,6 @@ public class RatingController {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Unable to update review!"));
         }
 
-
-
     }
 
     @PostMapping("/add")
@@ -126,5 +127,23 @@ public class RatingController {
         }
 
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getRatingsbyId(@PathVariable("id") long id ){
+        Optional<Rating> rating = ratingService.getratingsById(id);
+        if(rating.isPresent()){
+            return ResponseEntity.ok(rating.get());
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Reviews Not found!!!"));
+        }
+    }
+
+//    @PostMapping("/add")
+//    public ResponseEntity<?> saveRating(@RequestBody RatingRequest ratingRequest) {
+//
+//        return ResponseEntity.ok(new MessageResponse("Review added"));
+//    }
 
 }

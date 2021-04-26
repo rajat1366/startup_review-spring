@@ -1,11 +1,15 @@
 package com.StartupReview.service;
 
 import com.StartupReview.models.Rating;
-import com.StartupReview.models.Startup;
+
+
 import com.StartupReview.payload.response.StartupRatingResponse;
 import com.StartupReview.repository.RatingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,6 +18,7 @@ import java.util.Optional;
 public class RatingService {
 
     @Autowired
+
     RatingRepository ratingRepository;
 
     public Rating saveRating(Rating rating){
@@ -41,5 +46,14 @@ public class RatingService {
 
     public Optional<Rating> getRatingById(long ratingId) {
         return ratingRepository.findById(ratingId);
+    }
+
+    public Page<Rating> getRatings(Pageable pageable){
+        return ratingRepository.findAllByOrderByDateTimeDesc(pageable);
+    }
+
+    public Optional<Rating> getratingsById(long id) {
+        return ratingRepository.findById(id);
+
     }
 }

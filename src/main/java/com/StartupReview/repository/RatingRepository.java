@@ -1,6 +1,8 @@
 package com.StartupReview.repository;
 
 import com.StartupReview.models.Rating;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -9,6 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface RatingRepository extends JpaRepository<Rating,Long> {
+
 
 
     Boolean existsByUser_idAndStartup_id(Long user_id, Long startup_id);
@@ -21,4 +24,7 @@ public interface RatingRepository extends JpaRepository<Rating,Long> {
 
     @Query("SELECT r FROM Rating r WHERE r.user.id=?1 AND r.startup.id=?2")
     Optional<Rating> FindByUser_idAndStartup_id(Long user_id,Long startup_id);
+
+    Page<Rating> findAllByOrderByDateTimeDesc(Pageable pageable);
+
 }

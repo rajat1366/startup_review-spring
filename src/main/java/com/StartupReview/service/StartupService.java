@@ -34,5 +34,8 @@ public class StartupService {
         return startupRepository.findById(id);
     }
 
+    public void deleteById(long id) {
+        startupRepository.deleteById(id);
+    }
 
 }

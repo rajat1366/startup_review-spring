@@ -48,8 +48,8 @@ public class Rating {
         this.user = user;
     }
 
-    public Rating() {
-    }
+    public Rating() { }
+
 
     public Long getId() {
         return id;
