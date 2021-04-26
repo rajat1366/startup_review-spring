@@ -2,6 +2,7 @@ package com.StartupReview.service;
 
 import com.StartupReview.models.Startup;
 import com.StartupReview.models.User;
+import com.StartupReview.payload.response.StartupRatingResponse;
 import com.StartupReview.repository.StartupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,7 +24,7 @@ public class StartupService {
     }
 
     public Page<Startup> getstartups(Pageable pageable){
-        return startupRepository.findAllByOrderByDateTimeDesc(pageable);
+        return startupRepository.findAllByOrderByLaunchDateDesc(pageable);
     }
     public Page<Startup >getstartupsFromSearchData(String searchData,Pageable pageable){
         return  startupRepository.findByNameContainingOrDescriptionContaining(searchData,searchData, pageable);
@@ -32,4 +33,6 @@ public class StartupService {
     public Optional<Startup> getstartupsById(long id) {
         return startupRepository.findById(id);
     }
+
+
 }
