@@ -39,6 +39,7 @@ public class Startup {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "startup", fetch = FetchType.LAZY)
     private List<Rating> ratings;
 

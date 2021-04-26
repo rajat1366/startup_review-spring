@@ -11,6 +11,7 @@ public interface StartupRepository extends JpaRepository<Startup,Long> {
     Boolean existsByName(String name);
 
     Page<Startup> findAllByOrderByDateTimeDesc(Pageable pageable);
+    Page<Startup> findAllByOrderByLaunchDateDesc(Pageable pageable);
 
     Page<Startup> findByNameContainingOrDescriptionContaining(String name,String description,Pageable pageable);
 

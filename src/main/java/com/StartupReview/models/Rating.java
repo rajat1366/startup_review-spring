@@ -1,5 +1,7 @@
 package com.StartupReview.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -15,38 +17,46 @@ public class Rating {
     private Long id;
 
     @NotBlank
-    @Size(max = 20)
     private String title;
 
-    @NotBlank
-    private Integer rating;
+    private Float rating;
 
     @NotBlank
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @NotBlank
+
     @Column
     private LocalDateTime dateTime;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "startup_id")
     private Startup startup;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-
-    public Rating() { }
-
-    public Rating(@NotBlank @Size(max = 20) String title, @NotBlank Integer rating, @NotBlank String description, @NotBlank LocalDateTime dateTime, Startup startup, User user) {
+    public Rating(@NotBlank String title, @NotBlank Float rating, @NotBlank String description, @NotBlank LocalDateTime dateTime, @NotBlank Startup startup, @NotBlank User user) {
         this.title = title;
         this.rating = rating;
         this.description = description;
         this.dateTime = dateTime;
         this.startup = startup;
         this.user = user;
+    }
+
+    public Rating() { }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -57,11 +67,11 @@ public class Rating {
         this.title = title;
     }
 
-    public Integer getRating() {
+    public Float getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(Float rating) {
         this.rating = rating;
     }
 

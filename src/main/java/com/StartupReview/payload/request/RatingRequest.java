@@ -4,12 +4,26 @@ import javax.validation.constraints.NotBlank;
 
 public class RatingRequest {
 
+    private String id;
+
     @NotBlank
     private String title;
-    @NotBlank
-    private String rating;
+
     @NotBlank
     private String description;
+
+    @NotBlank
+    private String rating;
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
 
     public String getTitle() {
         return title;
@@ -18,6 +32,7 @@ public class RatingRequest {
     public void setTitle(String title) {
         this.title = title;
     }
+
 
     public String getRating() {
         return rating;
@@ -34,5 +49,6 @@ public class RatingRequest {
     public void setDescription(String description) {
         this.description = description;
     }
+
 
 }
