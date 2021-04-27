@@ -39,10 +39,9 @@ public class StartupService {
         startupRepository.deleteById(id);
     }
 
-<<<<<<< HEAD
+
     public List<Startup> findAll() {
         return startupRepository.findAll();
     }
-=======
->>>>>>> e60aeabe5e1f1a681c1f2709a2b102ce7a3bc075
+
 }
