@@ -40,7 +40,7 @@ public class Startup {
     private User user;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "startup", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "startup", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Rating> ratings;
 
     public Startup() {
