@@ -8,6 +8,8 @@ import com.StartupReview.payload.response.MessageResponse;
 import com.StartupReview.security.services.UserDetailsImpl;
 import com.StartupReview.service.StartupService;
 import com.StartupReview.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,6 +33,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/startup")
 public class StartupController {
+    private static final Logger logger = LogManager.getLogger(StartupController.class);
 
     @Autowired
     StartupService startupService;
@@ -44,10 +47,14 @@ public class StartupController {
         Pageable paging = PageRequest.of(page, size);
         if(searchData == null){
             Page<Startup> listofStartups =  startupService.getstartups(paging);
+            logger.info("[DATA REQUEST] - Requesting latest startups");
             return ResponseEntity.ok(listofStartups);
+
         } else {
             Page<Startup> listofStartups =  startupService.getstartupsFromSearchData(searchData,paging);
+            logger.info("[SEARCH REQUEST] - search value: "+searchData);
             return ResponseEntity.ok(listofStartups);
+
         }
 
     }
@@ -57,9 +64,11 @@ public class StartupController {
         if(startup.isPresent()){
             return ResponseEntity.ok(startup.get());
         } else {
-             return ResponseEntity
+            logger.error("[NO RECORD FOUND] - Startup info does not exist");
+            return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Startup Not found!!!"));
+
         }
     }
 
@@ -72,6 +81,7 @@ public class StartupController {
                     (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
             if (startupService.findByName(startupRequest.getName().toLowerCase())) {
+                logger.error("[RECORD EXISTS] - Startup already exits with this name");
                 return ResponseEntity
                         .badRequest()
                         .body(new MessageResponse("Start up already exits!!"));
@@ -89,12 +99,17 @@ public class StartupController {
 
             Startup result = startupService.saveStartup(startup);
 
-            if(result!= null)
+            if(result!= null) {
+                logger.info("[RECORD ADDED] - Startup added successfully" + result.getName());
                 return ResponseEntity.ok(new MessageResponse("Startup added successfully!"));
-            else
-                return ResponseEntity.badRequest().body(new MessageResponse("Error: Unable to add new startup!"));}
+            } else{
+                logger.error("[UNABLE TO ADD RECORD] - Unable to add startup to database");
+                return ResponseEntity.badRequest().body(new MessageResponse("Error: Unable to add new startup!"));
+            }
+        }
         catch(Exception e){
             System.out.println(e.getMessage());
+            logger.error("[UNABLE TO ADD RECORD] - Unable to add startup to database "+e.getMessage());
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Unable to add new startup!"));
         }
 
@@ -122,19 +137,23 @@ public class StartupController {
 
         Startup result = startupService.saveStartup(s);
 
-        if(result != null)
+        if (result != null) {
+            logger.info("[RECORD UPDATED] - Startup updated successfully" + result.getName());
             return ResponseEntity.ok(new MessageResponse("startup details updated successfully!"));
-        else
+        } else {
+            logger.error("[UNABLE TO UPDATE RECORD] - Unable to update startup to database");
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Unable to update startup details!"));
+        }
     }
-
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<HttpStatus> deleteStartup(@PathVariable("id") long id) {
         try {
             startupService.deleteById(id);
+            logger.info("[RECORD DELETED] - Startup deleted successfully");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
+            logger.error("[UNABLE TO DELETE RECORD] - Unable to delete startup to database "+e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

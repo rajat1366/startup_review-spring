@@ -1,8 +1,11 @@
 package com.StartupReview.security;
 
+import com.StartupReview.controller.RatingController;
 import com.StartupReview.security.jwt.AuthEntryPointJwt;
 import com.StartupReview.security.jwt.AuthTokenFilter;
 import com.StartupReview.security.services.UserDetailsServiceImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +29,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         // jsr250Enabled = true,
         prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;

@@ -11,6 +11,8 @@ import com.StartupReview.security.services.UserDetailsImpl;
 import com.StartupReview.service.RatingService;
 import com.StartupReview.service.StartupService;
 import com.StartupReview.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
@@ -32,6 +34,7 @@ import java.util.Optional;
 @RequestMapping("/api/review")
 
 public class RatingController {
+    private static final Logger logger = LogManager.getLogger(RatingController.class);
 
     @Autowired
     StartupService startupService;
@@ -46,8 +49,10 @@ public class RatingController {
     public ResponseEntity<?> getReviewFromStartupAndUser(@RequestParam long user_id,@RequestParam long startup_id){
         Optional <Rating> Rating = ratingService.getReviewByStartupIdAndUserId(user_id,startup_id);
         if(Rating.isPresent()){
+
             return ResponseEntity.ok(Rating.get());
         } else {
+            logger.error("[NO RECORD FOUND] - Review not found");
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Review Not found!!!"));
@@ -65,6 +70,7 @@ public class RatingController {
         if(startupRatingResponse != null ){
             return ResponseEntity.ok(startupRatingResponse);
         } else {
+            logger.error("[NO RECORD FOUND] - Unable to find rating of the review");
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Unable to find rating!!"));
@@ -90,8 +96,10 @@ public class RatingController {
 
         Rating result = ratingService.saveRating(rating);
         if(result != null ){
+            logger.info("[RECORD UPDATED] - Review Updated sucessfully");
             return ResponseEntity.ok(new MessageResponse("Review Updated sucessfully!"));
         } else {
+            logger.error("[UNABLE TO UPDATE RECORD] - Unable to update review");
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Unable to update review!"));
         }
 
@@ -113,19 +121,24 @@ public class RatingController {
 
             Boolean reviewDone = ratingService.existByUser_idAndStartup_id(user.getId(),startup.getId());
             if(reviewDone){
+                logger.info("[RECORD EXISTS] - Review already written by user on this startup " + startup.getName());
                 return ResponseEntity.badRequest().body(new MessageResponse("Error: You have already written the review for this startup!! "));
             } else {
                 Rating result = ratingService.saveRating(rating);
 
-                if(result!= null)
+                if (result != null) {
+                    logger.info("[RECORD ADDED] - Review added successfully" + startup.getName());
                     return ResponseEntity.ok(new MessageResponse("Review added successfully!"));
-                else
+                } else {
+                    logger.error("[UNABLE TO ADD RECORD] - Unable to add review to database");
                     return ResponseEntity.badRequest().body(new MessageResponse("Error: Unable to add review!"));
+                }
             }
 
 
         }catch (Exception e){
             System.out.println(e.getMessage());
+            logger.error("[UNABLE TO ADD RECORD] - Unable to add review to database "+e.getMessage());
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Unable to add new review!"));
         }
 
@@ -136,9 +149,12 @@ public class RatingController {
         Pageable paging = PageRequest.of(page, size);
         Page<Rating> listofReviews = ratingService.getRatings(Long.parseLong(startupId),paging);
         if(listofReviews != null)
-        return ResponseEntity.ok(listofReviews);
-        else
+            return ResponseEntity.ok(listofReviews);
+        else {
+            logger.error("[NO RECORD FOUND] - Review info unable to get");
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Unable to get reviews!!"));
+        }
+
 //        if(searchData == null){
 //            Page<Startup> listofStartups =  startupService.getstartups(paging);
 //            return ResponseEntity.ok(listofStartups);
@@ -155,6 +171,7 @@ public class RatingController {
         if(rating.isPresent()){
             return ResponseEntity.ok(rating.get());
         } else {
+            logger.error("[NO RECORD FOUND] - Review info does not exist");
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Reviews Not found!!!"));
