@@ -26,6 +26,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -156,5 +157,10 @@ public class StartupController {
             logger.error("[UNABLE TO DELETE RECORD] - Unable to delete startup to database "+e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    @GetMapping("/all")
+    public List<Startup> displayStartups() {
+        logger.info("[RECORDS SHOWN]- All Startup records displayed");
+        return startupService.findAll();
     }
 }
