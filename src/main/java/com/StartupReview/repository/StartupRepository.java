@@ -4,7 +4,11 @@ import com.StartupReview.models.Startup;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface StartupRepository extends JpaRepository<Startup,Long> {
@@ -14,5 +18,9 @@ public interface StartupRepository extends JpaRepository<Startup,Long> {
     Page<Startup> findAllByOrderByLaunchDateDesc(Pageable pageable);
 
     Page<Startup> findByNameContainingOrDescriptionContaining(String name,String description,Pageable pageable);
+
+    Page<Startup> findByTagsContaining(String tag,Pageable pageable);
+
+    Page<Startup> findByNameContainingOrDescriptionOrTagsContaining(String name,String description, String tag,Pageable pageable);
 
 }
