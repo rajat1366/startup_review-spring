@@ -17,6 +17,10 @@ public class StartupService {
     @Autowired
     private StartupRepository startupRepository;
 
+    public StartupService(StartupRepository startupRepository) {
+        this.startupRepository = startupRepository;
+    }
+
     public Startup saveStartup(Startup startup){
          return startupRepository.save(startup);
     }
