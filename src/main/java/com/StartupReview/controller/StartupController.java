@@ -8,6 +8,7 @@ import com.StartupReview.payload.response.MessageResponse;
 import com.StartupReview.security.services.UserDetailsImpl;
 import com.StartupReview.service.StartupService;
 import com.StartupReview.service.UserService;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +80,7 @@ public class StartupController {
     }
 
     @PostMapping("/add")
-    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('USER')")
     public ResponseEntity<?> saveStartup(@Valid @RequestBody StartupRequest startupRequest) {
         try {
           //  System.out.println(startup);
@@ -122,7 +123,7 @@ public class StartupController {
     }
 
     @PutMapping("/update/{id}")
-    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('USER')")
     public ResponseEntity<?> updateStartup(@Valid @PathVariable("id") long id, @RequestBody StartupRequest startupRequest) throws ParseException {
 
         Optional<Startup> startup = startupService.getstartupsById(id);
@@ -153,7 +154,7 @@ public class StartupController {
         }
     }
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('USER')")
     public ResponseEntity<HttpStatus> deleteStartup(@PathVariable("id") long id) {
         try {
             startupService.deleteById(id);
@@ -165,8 +166,17 @@ public class StartupController {
         }
     }
     @GetMapping("/all")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public List<Startup> displayStartups() {
         logger.info("[RECORDS SHOWN]- All Startup records displayed");
         return startupService.findAll();
+    }
+
+    @GetMapping("/getStartupByUser")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('USER')")
+    public List<Startup> getStartupByUser(){
+        UserDetailsImpl userDetails =
+                (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return startupService.findStartupByUser(userDetails.getId());
     }
 }

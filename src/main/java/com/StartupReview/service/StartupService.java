@@ -4,6 +4,7 @@ import com.StartupReview.models.Startup;
 import com.StartupReview.models.User;
 import com.StartupReview.payload.response.StartupRatingResponse;
 import com.StartupReview.repository.StartupRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -53,5 +54,9 @@ public class StartupService {
     }
     public Page<Startup> getStartupsFromTagDataAndSearchData(String searchData,String tag,Pageable pageable){
         return startupRepository.findByNameContainingOrDescriptionOrTagsContaining(searchData,searchData,tag,pageable);
+    }
+
+    public List<Startup> findStartupByUser(Long user_id) {
+            return startupRepository.findStartupByUser_id(user_id);
     }
 }

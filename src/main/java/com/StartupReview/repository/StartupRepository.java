@@ -1,5 +1,6 @@
 package com.StartupReview.repository;
 
+import com.StartupReview.models.Rating;
 import com.StartupReview.models.Startup;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface StartupRepository extends JpaRepository<Startup,Long> {
@@ -23,4 +25,7 @@ public interface StartupRepository extends JpaRepository<Startup,Long> {
 
     Page<Startup> findByNameContainingOrDescriptionOrTagsContaining(String name,String description, String tag,Pageable pageable);
 
+
+    @Query("SELECT s FROM Startup s WHERE s.user.id=?1 ")
+    List<Startup> findStartupByUser_id(Long user_id);
 }
