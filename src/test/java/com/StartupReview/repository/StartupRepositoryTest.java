@@ -9,13 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
@@ -60,10 +64,17 @@ class StartupRepositoryTest {
 
     @Test
     void findAllByOrderByLaunchDateDesc() {
+        Pageable pageable = PageRequest.of(0,3);
+        Page<Startup> s = startupRepositoryTest.findAllByOrderByLaunchDateDesc(pageable);
+        assertNotNull(s);
     }
 
 
     @Test
     void findByNameContainingOrDescriptionContaining() {
+        String search = "video";
+        Pageable pageable = PageRequest.of(0,3);
+        Page<Startup> s = startupRepositoryTest.findByNameContainingOrDescriptionContaining(search,search,pageable);
+        assertNotNull(s);
     }
 }

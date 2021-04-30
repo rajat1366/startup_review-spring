@@ -11,11 +11,15 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.data.domain.PageRequest;
 
+import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
@@ -38,15 +42,46 @@ class StartupServiceTest {
 
     @Test
     void saveStartup() {
+        User user = new User("user1","user1@gmail.com","name","password");
+		Date dt = new Date();
+		LocalDateTime now = LocalDateTime.now();
+		Startup startup = new Startup("zoom","video conferencing app",user,dt,now,"video");
+
+		when(startupRepository.save(startup)).thenReturn(startup);
+		assertEquals(startup, startupService.saveStartup(startup));
     }
 
     @Test
-    void findByName() {
+    void findByNameTrue() {
+        User user = new User("user1","user1@gmail.com","name","password");
+        Date dt = new Date();
+        LocalDateTime now = LocalDateTime.now();
+
+        String name = "zoom";
+        Startup startup = new Startup(name,"video conferencing app",user,dt,now,"video");
+
+        when(startupRepository.existsByName(name)).thenReturn(Boolean.TRUE);
+//        Boolean b = startupService.findByName(name);
+
+//        assertThat(b).isTrue();
+        assertEquals(Boolean.TRUE, startupService.findByName(name));
+    }
+
+    @Test
+    void findByNameFalse() {
+        String name = "zoom";
+        when(startupRepository.existsByName(name)).thenReturn(Boolean.FALSE);
+        Boolean b = startupService.findByName(name);
+
+        assertThat(b).isFalse();
     }
 
     @Test
     void getstartups() {
+//        Pageable pageable = PageRequest.of(0,3);
+//        when(startupRepository.findAllByOrderByLaunchDateDesc(pageable)).thenReturn();
     }
+
 
     @Test
     void getstartupsFromSearchData() {
