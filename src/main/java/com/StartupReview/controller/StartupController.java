@@ -25,10 +25,7 @@ import javax.validation.Valid;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -44,18 +41,26 @@ public class StartupController {
 
     @GetMapping("/")
     public ResponseEntity<?>getStartups(@RequestParam(required = false) String searchData,@RequestParam(defaultValue = "0") int page,
-                                        @RequestParam(defaultValue = "3") int size){
+                                        @RequestParam(defaultValue = "3") int size,@RequestParam(required = false) String tagData){
         Pageable paging = PageRequest.of(page, size);
-        if(searchData == null){
-            Page<Startup> listofStartups =  startupService.getstartups(paging);
-            logger.info("[DATA REQUEST] - Requesting latest startups");
+
+        if(searchData != null && tagData != null){
+            Page<Startup> listofStartups =  startupService.getStartupsFromTagDataAndSearchData(searchData,tagData,paging);
+            logger.info("[SEARCH REQUEST] - Requesting from tag and search: ");
             return ResponseEntity.ok(listofStartups);
 
-        } else {
+        }  else if (searchData == null && tagData != null){
+                    Page<Startup> listofStartups = startupService.getStartupsFromTagData(tagData,paging);
+                    logger.info("[SEARCH REQUEST] - Requesting from tag data "+tagData);
+                    return ResponseEntity.ok(listofStartups);
+        } else if(searchData != null && tagData == null){
             Page<Startup> listofStartups =  startupService.getstartupsFromSearchData(searchData,paging);
             logger.info("[SEARCH REQUEST] - search value: "+searchData);
             return ResponseEntity.ok(listofStartups);
-
+        } else {
+            Page<Startup> listofStartups =  startupService.getstartups(paging);
+            logger.info("[DATA REQUEST] - Requesting latest startups");
+            return ResponseEntity.ok(listofStartups);
         }
 
     }
@@ -93,7 +98,7 @@ public class StartupController {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); //if month entered in full-text like 'january', use MMMM
             Date launchDate = format.parse(string);
 
-            Startup startup = new Startup(startupRequest.getName().toLowerCase(), startupRequest.getDescription(), user, launchDate, LocalDateTime.now());
+            Startup startup = new Startup(startupRequest.getName().toLowerCase(), startupRequest.getDescription(), user, launchDate, LocalDateTime.now(),startupRequest.getTags());
 //            startup.setUser(user);
 //            startup.setName(startup.getName().toLowerCase());
 //            startup.setDateTime( LocalDateTime.now());
@@ -135,6 +140,7 @@ public class StartupController {
         s.setDescription(startupRequest.getDescription());
         s.setLaunchDate(launchDate);
         s.setDateTime(LocalDateTime.now());
+        s.setTags(startupRequest.getTags());
 
         Startup result = startupService.saveStartup(s);
 

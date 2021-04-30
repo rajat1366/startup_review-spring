@@ -19,6 +19,7 @@ import com.StartupReview.repository.RoleRepository;
 import com.StartupReview.repository.UserRepository;
 import com.StartupReview.security.jwt.JwtUtils;
 import com.StartupReview.security.services.UserDetailsImpl;
+import com.StartupReview.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,7 +45,7 @@ public class AuthController {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @Autowired
     RoleRepository roleRepository;
@@ -79,14 +80,14 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         try{
-            if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+            if (userService.existsByUsername(signUpRequest.getUsername())) {
                 logger.error("[RECORD EXISTS] - username is already taken!");
                 return ResponseEntity
                         .badRequest()
                         .body(new MessageResponse("Error: Username is already taken!"));
             }
 
-            if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+            if (userService.existsByEmail(signUpRequest.getEmail())) {
                 logger.error("[RECORD EXISTS] - Email is already in use!");
                 return ResponseEntity
                         .badRequest()
@@ -130,7 +131,8 @@ public class AuthController {
             }
 
             user.setRoles(roles);
-            userRepository.save(user);
+            userService.saveUser(user);
+
             logger.info("[RECORD ADDED] - User added successfully");
             return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
         } catch (Exception e){

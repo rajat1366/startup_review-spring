@@ -48,7 +48,15 @@ public class User {
     public User() {
     }
 
-    public User(String username, String email,String name, String password) {
+    public User(Long id, @NotBlank @Size(max = 20) String username, @NotBlank @Size(max = 20) String name, @NotBlank @Size(max = 50) @Email String email, @NotBlank @Size(max = 120) String password) {
+        this.id = id;
+        this.username = username;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
+    public User(String username, String email, String name, String password) {
         this.username = username;
         this.email = email;
         this.password = password;

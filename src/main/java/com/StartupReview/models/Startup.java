@@ -27,6 +27,9 @@ public class Startup {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @NotBlank
+    @Column(columnDefinition = "TEXT")
+    private String tags;
 
     @Column
     private Date launchDate;
@@ -51,12 +54,13 @@ public class Startup {
         this.description = description;
     }
 
-    public Startup(@NotBlank String name, @NotBlank String description, User user, Date launchDate, LocalDateTime dateTime) {
+    public Startup(@NotBlank String name, @NotBlank String description, User user, Date launchDate, LocalDateTime dateTime,String tags) {
         this.name = name;
         this.description = description;
         this.user = user;
         this.launchDate = launchDate;
         this.dateTime = dateTime;
+        this.tags = tags;
     }
 
     public List<Rating> getRatings() {
@@ -113,5 +117,13 @@ public class Startup {
 
     public void setLaunchDate(Date launchDate) {
         this.launchDate = launchDate;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 }

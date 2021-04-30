@@ -48,4 +48,10 @@ public class StartupService {
         return startupRepository.findAll();
     }
 
+    public Page<Startup> getStartupsFromTagData(String tag, Pageable paging) {
+            return startupRepository.findByTagsContaining(tag,paging);
+    }
+    public Page<Startup> getStartupsFromTagDataAndSearchData(String searchData,String tag,Pageable pageable){
+        return startupRepository.findByNameContainingOrDescriptionOrTagsContaining(searchData,searchData,tag,pageable);
+    }
 }
