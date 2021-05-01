@@ -23,7 +23,7 @@ public interface StartupRepository extends JpaRepository<Startup,Long> {
 
     Page<Startup> findByTagsContaining(String tag,Pageable pageable);
 
-    Page<Startup> findByNameContainingOrDescriptionOrTagsContaining(String name,String description, String tag,Pageable pageable);
+    Page<Startup> findByNameContainingOrDescriptionContainingOrTagsContaining(String name,String description, String tag,Pageable pageable);
 
 
     @Query("SELECT s FROM Startup s WHERE s.user.id=?1 ")
