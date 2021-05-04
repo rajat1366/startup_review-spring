@@ -31,6 +31,10 @@ public class Startup {
     @Column(columnDefinition = "TEXT")
     private String tags;
 
+    @NotBlank
+    @Column(columnDefinition = "TEXT")
+    private String logoLink;
+
     @Column
     private Date launchDate;
 
@@ -54,13 +58,14 @@ public class Startup {
         this.description = description;
     }
 
-    public Startup(@NotBlank String name, @NotBlank String description, User user, Date launchDate, LocalDateTime dateTime,String tags) {
+    public Startup(@NotBlank String name, @NotBlank String description, User user, Date launchDate, LocalDateTime dateTime,String tags,String logoLink) {
         this.name = name;
         this.description = description;
         this.user = user;
         this.launchDate = launchDate;
         this.dateTime = dateTime;
         this.tags = tags;
+        this.logoLink = logoLink;
     }
 
     public List<Rating> getRatings() {
@@ -125,5 +130,13 @@ public class Startup {
 
     public void setTags(String tags) {
         this.tags = tags;
+    }
+
+    public String getLogoLink() {
+        return logoLink;
+    }
+
+    public void setLogoLink(String logoLink) {
+        this.logoLink = logoLink;
     }
 }

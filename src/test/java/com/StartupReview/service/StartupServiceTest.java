@@ -45,7 +45,7 @@ class StartupServiceTest {
         User user = new User("user1","user1@gmail.com","name","password");
 		Date dt = new Date();
 		LocalDateTime now = LocalDateTime.now();
-		Startup startup = new Startup("zoom","video conferencing app",user,dt,now,"video");
+		Startup startup = new Startup("zoom","video conferencing app",user,dt,now,"video","testLink");
 
 		when(startupRepository.save(startup)).thenReturn(startup);
 		assertEquals(startup, startupService.saveStartup(startup));
@@ -58,7 +58,7 @@ class StartupServiceTest {
         LocalDateTime now = LocalDateTime.now();
 
         String name = "zoom";
-        Startup startup = new Startup(name,"video conferencing app",user,dt,now,"video");
+        Startup startup = new Startup(name,"video conferencing app",user,dt,now,"video","testLink");
 
         when(startupRepository.existsByName(name)).thenReturn(Boolean.TRUE);
 //        Boolean b = startupService.findByName(name);
@@ -95,7 +95,7 @@ class StartupServiceTest {
         Date dt = new Date();
         LocalDateTime now = LocalDateTime.now();
 
-        Startup startup = new Startup("dummy","dummy",testUser,dt,now,"dummy");
+        Startup startup = new Startup("dummy","dummy",testUser,dt,now,"dummy","testLink");
 
         startup.setId(1l);
 

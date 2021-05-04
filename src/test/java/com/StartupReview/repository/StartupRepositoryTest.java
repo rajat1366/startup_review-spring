@@ -42,7 +42,7 @@ class StartupRepositoryTest {
 		LocalDateTime now = LocalDateTime.now();
 
 		String name= "zoom";
-		Startup startup = new Startup(name,"video conferencing app",testUser,dt,now,"video");
+		Startup startup = new Startup(name,"video conferencing app",testUser,dt,now,"video","TestLink");
         startupRepositoryTest.save(startup);
 
         //when
