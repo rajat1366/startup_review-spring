@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -175,7 +176,7 @@ public class RatingController {
 
     @GetMapping("/")
     public ResponseEntity<?> getRatingsbyId(@RequestParam long id){
-        Optional<Rating> rating = ratingService.getratingsById(id);
+        Optional<Rating> rating = ratingService.getRatingById(id);
         if(rating.isPresent()){
             String startup = rating.get().getStartup().getName();
             System.out.println(startup);

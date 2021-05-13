@@ -26,7 +26,6 @@ public class CommentService {
         return commentRepository.findByDateTimeOrderByDateTimeAsc(rating_id,limit);
     }
 
-
     public List<Comment> getAllComments(long rating_id) {
         return commentRepository.getAllCommentsByRating(rating_id);
     }

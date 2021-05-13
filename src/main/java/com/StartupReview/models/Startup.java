@@ -68,6 +68,19 @@ public class Startup {
         this.logoLink = logoLink;
     }
 
+    public Startup(Long id,@NotBlank String name, @NotBlank String description, User user, Date launchDate, LocalDateTime dateTime,String tags,String logoLink) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.user = user;
+        this.launchDate = launchDate;
+        this.dateTime = dateTime;
+        this.tags = tags;
+        this.logoLink = logoLink;
+    }
+
+
+
     public List<Rating> getRatings() {
         return ratings;
     }

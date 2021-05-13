@@ -11,10 +11,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
-import org.springframework.data.domain.PageRequest;
 
-import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
@@ -32,7 +29,7 @@ class StartupServiceTest {
 
     private StartupService startupService;
 
-    @Autowired
+    @Mock
     private UserRepository userRepository;
 
     @BeforeEach
