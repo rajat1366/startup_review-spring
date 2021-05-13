@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class StartupRepositoryTest {
 
-    @Mock
+    @Autowired
     private StartupRepository startupRepositoryTest;
 
     @Autowired
