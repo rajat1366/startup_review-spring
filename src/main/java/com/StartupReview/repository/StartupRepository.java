@@ -13,6 +13,7 @@ import java.util.List;
 
 @Repository
 public interface StartupRepository extends JpaRepository<Startup,Long> {
+
     Boolean existsByName(String name);
 
     Page<Startup> findAllByOrderByDateTimeDesc(Pageable pageable);
