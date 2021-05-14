@@ -40,6 +40,14 @@ public class Comment {
         this.rating = rating;
     }
 
+    public Comment(Long id, @NotBlank String description, LocalDateTime dateTime, User user, Rating rating) {
+        this.id = id;
+        this.description = description;
+        this.dateTime = dateTime;
+        this.user = user;
+        this.rating = rating;
+    }
+
     public Long getId() {
         return id;
     }
