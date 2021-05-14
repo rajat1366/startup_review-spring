@@ -19,6 +19,7 @@ public class Rating {
     private Long id;
 
     @NotBlank
+    @Size(max=255)
     private String title;
 
     private Float rating;

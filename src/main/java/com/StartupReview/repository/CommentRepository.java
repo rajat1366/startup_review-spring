@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment,Long> {
 
-    @Query(value = "SELECT c FROM Comment c WHERE c.rating.id=?1  order by c.dateTime asc LIMIT ?2", nativeQuery = true)
+    @Query(value = "SELECT * FROM comments WHERE rating_id=?1  order by date_time asc LIMIT ?2", nativeQuery = true)
     List<Comment> findByDateTimeOrderByDateTimeAsc(long rating_id, long limit);
 
     @Query("SELECT c FROM Comment c WHERE c.rating.id=?1 ")
