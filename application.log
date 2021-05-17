@@ -12206,3 +12206,12 @@ Caused by: java.net.UnknownHostException: startupreview-db
 17/May/2021:16:23:32 965 [FrameworkServlet.java] [INFO] org.springframework.web.servlet.DispatcherServlet Initializing Servlet 'dispatcherServlet'
 17/May/2021:16:23:32 966 [FrameworkServlet.java] [INFO] org.springframework.web.servlet.DispatcherServlet Completed initialization in 1 ms
 17/May/2021:16:23:33 242 [AuthEntryPointJwt.java] [ERROR] com.StartupReview.security.jwt.AuthEntryPointJwt [Unauthorized ACCESS] - message: Full authentication is required to access this resource
+17/May/2021:16:26:44 161 [RatingController.java] [INFO] com.StartupReview.controller.RatingController [RECORD UPDATED] - Review Updated sucessfully
+17/May/2021:16:26:47 435 [AuthEntryPointJwt.java] [ERROR] com.StartupReview.security.jwt.AuthEntryPointJwt [Unauthorized ACCESS] - message: Full authentication is required to access this resource
+17/May/2021:16:28:16 018 [CommentController.java] [INFO] com.StartupReview.controller.RatingController [RECORD UPDATED] - Comment Updated sucessfully
+17/May/2021:16:28:25 364 [CommentController.java] [INFO] com.StartupReview.controller.RatingController [RECORD UPDATED] - Comment Updated sucessfully
+17/May/2021:16:28:32 458 [RatingController.java] [INFO] com.StartupReview.controller.RatingController [RECORD UPDATED] - Review Updated sucessfully
+17/May/2021:16:28:35 219 [AuthEntryPointJwt.java] [ERROR] com.StartupReview.security.jwt.AuthEntryPointJwt [Unauthorized ACCESS] - message: Full authentication is required to access this resource
+17/May/2021:16:28:58 144 [AuthEntryPointJwt.java] [ERROR] com.StartupReview.security.jwt.AuthEntryPointJwt [Unauthorized ACCESS] - message: Full authentication is required to access this resource
+17/May/2021:16:28:58 164 [StartupController.java] [INFO] com.StartupReview.controller.StartupController [DATA REQUEST] - Requesting latest startups
+17/May/2021:16:28:59 710 [AuthEntryPointJwt.java] [ERROR] com.StartupReview.security.jwt.AuthEntryPointJwt [Unauthorized ACCESS] - message: Full authentication is required to access this resource
