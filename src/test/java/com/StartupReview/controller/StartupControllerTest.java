@@ -2,6 +2,7 @@ package com.StartupReview.controller;
 
 import com.StartupReview.models.Startup;
 import com.StartupReview.models.User;
+import com.StartupReview.repository.RoleRepository;
 import com.StartupReview.security.jwt.AuthEntryPointJwt;
 import com.StartupReview.security.jwt.JwtUtils;
 import com.StartupReview.security.services.UserDetailsServiceImpl;
@@ -38,6 +39,7 @@ class StartupControllerTest {
     private UserService userService;
     @MockBean
     private StartupService startupService;
+
     @MockBean
     private UserDetailsServiceImpl userDetailsService;
     @MockBean

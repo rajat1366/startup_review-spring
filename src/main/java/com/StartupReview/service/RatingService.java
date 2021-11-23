@@ -33,6 +33,9 @@ public class RatingService {
     public Boolean existByUser_idAndStartup_id(Long user_id, Long startup_id) {
         return ratingRepository.existsByUser_idAndStartup_id(user_id, startup_id);
     }
+    public Boolean existById(Long rating_id){
+        return ratingRepository.existsById(rating_id);
+    }
 
     public StartupRatingResponse getstartupsRating(long id) {
         long count = ratingRepository.countofRatings(id);

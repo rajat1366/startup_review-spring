@@ -5,23 +5,31 @@ import javax.validation.constraints.*;
 
 public class SignupRequest {
     @NotBlank
-    @Size(min = 3, max = 20)
+//    @Size(min = 3, max = 20)
     private String username;
 
     @NotBlank
-    @Size(max = 20)
+//    @Size(max = 20)
     private String name;
 
     @NotBlank
-    @Size(max = 50)
-    @Email
+//    @Size(max = 50)
+//    @Email
     private String email;
 
     private Set<String> role;
 
     @NotBlank
-    @Size(min = 5, max = 40)
+//    @Size(min = 5, max = 40)
     private String password;
+
+    public SignupRequest(@NotBlank String username, @NotBlank String name, @NotBlank String email, Set<String> role, @NotBlank String password) {
+        this.username = username;
+        this.name = name;
+        this.email = email;
+        this.role = role;
+        this.password = password;
+    }
 
     public String getUsername() {
         return username;

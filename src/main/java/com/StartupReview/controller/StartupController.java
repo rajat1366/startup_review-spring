@@ -40,6 +40,29 @@ public class StartupController {
     @Autowired
     UserService userService;
 
+    @GetMapping("/search")
+    public ResponseEntity<?> searchStartups(@RequestParam(required = false) String searchData,@RequestParam Integer page,
+                                            @RequestParam Integer size ){
+
+
+        if(searchData!= null && page != null && size != null ){
+            if(page < 0  || size <= 0 || searchData.length() == 0){
+                return ResponseEntity
+                        .badRequest()
+                        .body(new MessageResponse("Invalid input -invalid searchData or page or size"));
+            } else {
+                Pageable paging = PageRequest.of(page,size);
+                Page<Startup> listofStartups =  startupService.getstartupsFromSearchData(searchData,paging);
+                logger.info("[SEARCH REQUEST] - search value: "+searchData);
+                return ResponseEntity.ok(listofStartups);
+            }
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Invalid input - contains null"));
+        }
+    }
+
     @GetMapping("/")
     public ResponseEntity<?>getStartups(@RequestParam(required = false) String searchData,@RequestParam(defaultValue = "0") int page,
                                         @RequestParam(defaultValue = "3") int size,@RequestParam(required = false) String tagData){

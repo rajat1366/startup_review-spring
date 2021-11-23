@@ -74,7 +74,8 @@ public class CommentController {
     }
 
     @GetMapping("/getAllComments")
-    public ResponseEntity<?> getAllComments(@RequestParam long rating_id){
+    public ResponseEntity<?> getAllComments(@RequestParam Long rating_id){
+
 
             List<Comment> listOfComments = commentService.getAllComments(rating_id);
             ArrayList<CommentResponse> commentResponses=new ArrayList<CommentResponse>();
