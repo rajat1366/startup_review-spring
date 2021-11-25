@@ -47,15 +47,13 @@ public class CACC_AuthController {
 
     // this  is Correlated Active Clause Coverage on the predicate on url - /api/auth/signup  on the predicate
     //          on line 94 in AuthController.java
-    //if( signUpRequest.getUsername().length() < 3 || signUpRequest.getUsername().length() > 20 || userService.existsByUsername(signUpRequest.getUsername() ))
+    //if( signUpRequest.getUsername().length() <= 3 || signUpRequest.getUsername().length() > 20 || userService.existsByUsername(signUpRequest.getUsername() ))
     //                              C1             ||                      C2                   ||      C3              naming the clauses.
-    //  method test1 and test2 show C1 as the major clause
-    //  method test3 and test4 show C2 as major clause
-    //  method test5 and test6 show C3 as major clause
 
     @Test
     void test1() throws Exception{
-        // username = "tet"     C1 = true   C2 = false   C3  = false    return bad request
+        //      C1    ||    C2     ||     C3         -- username = tet
+        //      T     ||    F      ||       F       --  return bad request
 
         SignupRequest testUser = new SignupRequest("tet", "test", "test@test.com", new HashSet<String>(), "test123$");
         mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/signup")
@@ -67,14 +65,99 @@ public class CACC_AuthController {
 
 
     @Test
-    void test100() throws Exception{
-        // username = "test"     C1 = true   C2 = false   C3  = false    return bad request
+    void test2() throws Exception{
+        //      C1    ||    C2     ||     C3        --  C2 is major clause  -- username = testlengthisgreaterthan20
+        //      F     ||    T      ||      F        --  return bad request
 
-        SignupRequest testUser = new SignupRequest("test", "test", "test@test.com", new HashSet<String>(), "test123$");
+        SignupRequest testUser = new SignupRequest("testlengthisgreaterthan20", "test", "test@test.com", new HashSet<String>(), "test123$");
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/signup")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(testUser)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+    }
+
+    @Test
+    void test3() throws Exception{
+        //      C1    ||    C2     ||     C3         -- username = admin
+        //      F     ||    F      ||      T        --  return bad request
+
+        SignupRequest testUser = new SignupRequest("admin", "test", "test@test.com", new HashSet<String>(), "test123$");
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/signup")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(testUser)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+    }
+    @Test
+    void test4() throws Exception{
+        //      C1    ||    C2     ||     C3        --  C3 is major clause  -- username = test123
+        //      F     ||    F      ||      F        --  return ok response
+
+        SignupRequest testUser = new SignupRequest("test123", "test", "test@test.com", new HashSet<String>(), "test123$");
         mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/signup")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(testUser)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
     }
+
+    // this  is Correlated Active Clause Coverage on the predicate on url - /api/auth/signup  on the predicate
+    //          on line 98 in AuthController.java
+    //if(signUpRequest.getEmail().length()>20 || !emailPattern.matcher(signUpRequest.getEmail()).find()|| userService.existsByEmail(signUpRequest.getEmail()))
+    //                              C1        ||                      C2                               ||                C3              naming the clauses.
+
+    @Test
+    void test5() throws Exception{
+        //      C1    ||    C2     ||     C3        --  C1 is major clause  -- email = testslengthgreaterthan20@gmail.com
+        //      T     ||    F      ||      F        --  return bad response
+
+        SignupRequest testUser = new SignupRequest("test123", "test", "testslengthgreaterthan20@gmail.com", new HashSet<String>(), "test123$");
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/signup")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(testUser)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+    }
+
+    @Test
+    void test6() throws Exception{
+        //      C1    ||    C2     ||     C3        --  C2 is major clause  -- email = test123.com
+        //      F     ||    T      ||      F        --  return bad response
+
+        SignupRequest testUser = new SignupRequest("rajat123", "test", "test123.com", new HashSet<String>(), "test123$");
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/signup")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(testUser)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+    }
+
+    @Test
+    void test7() throws Exception{
+        //      C1    ||    C2     ||     C3        --  C3 is major clause  -- email = admin@admin.com
+        //      F     ||    F      ||      T        --  return bad response
+
+        SignupRequest testUser = new SignupRequest("rajat123", "test", "admin@admin.com", new HashSet<String>(), "test123$");
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/signup")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(testUser)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+    }
+
+    @Test
+    void test8() throws Exception{
+        //      C1    ||    C2     ||     C3        --  C3 is major clause  -- username = test123@gmail.com
+        //      F     ||    F      ||      F        --  return ok response
+
+        SignupRequest testUser = new SignupRequest("test123", "test", "test123@gmail.com", new HashSet<String>(), "test123$");
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/signup")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(testUser)))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+    }
+
+
 }

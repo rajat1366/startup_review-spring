@@ -95,10 +95,10 @@ public class AuthController {
                 return ResponseEntity
                         .badRequest()
                         .body(new MessageResponse("Error: Username should be greater than 3 and less than 20 or username is already taken"));
-            } else if(signUpRequest.getEmail().length()>50 || signUpRequest.getName().length() > 20 || !emailPattern.matcher(signUpRequest.getEmail()).find()|| userService.existsByEmail(signUpRequest.getEmail())) {
+            } else if(signUpRequest.getEmail().length()>20 || !emailPattern.matcher(signUpRequest.getEmail()).find()|| userService.existsByEmail(signUpRequest.getEmail())) {
                 return ResponseEntity
                         .badRequest()
-                        .body(new MessageResponse("Error: Email is already or invalid email in use or email length should be less than 50 and name should be less than 20"));
+                        .body(new MessageResponse("Error: Email is already used or invalid email or email length should be less than 20"));
             } else if( signUpRequest.getPassword().length() < 5 || signUpRequest.getPassword().length() > 40 || !p.matcher(signUpRequest.getPassword()).find()){
                 return ResponseEntity
                         .badRequest()
