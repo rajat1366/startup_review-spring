@@ -60,10 +60,11 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
-        if(loginRequest.getUsername() == null || loginRequest.getUsername().length() == 0 || !userService.existsByUsername(loginRequest.getUsername())){
+        if( loginRequest.getUsername().length() == 0 || !userService.existsByUsername(loginRequest.getUsername())
+                ||  !encoder.matches(loginRequest.getPassword(),userService.findByUsername(loginRequest.getUsername()).get().getPassword())){
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Invalid username"));
+                    .body(new MessageResponse("Error: Invalid username or password"));
         } else {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));

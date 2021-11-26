@@ -3,11 +3,16 @@ package com.StartupReview.payload.request;
 import javax.validation.constraints.NotBlank;
 
 public class LoginRequest {
-//    @NotBlank
+    @NotBlank
     private String username;
 
     @NotBlank
     private String password;
+
+    public LoginRequest(@NotBlank String username, @NotBlank String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public String getUsername() {
         return username;
